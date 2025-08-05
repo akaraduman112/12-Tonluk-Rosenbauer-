@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ROSENBAUER 12 TON MERCEDES KULLANIM - Sekmeli</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fefefe;
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafafa;
+      padding: 20px 15px;
+      border-bottom: 3px solid #b30000;
+      box-shadow: 0 4px 8px rgba(179, 0, 0, 0.15);
+    }
+
+    .logo-left img, .logo-right img {
+      height: 80px;
+      border-radius: 10px;
+      background: #fff;
+      padding: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .title-section {
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .title-section h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #b30000;
+    }
+
+    .title-section h2 {
+      margin: 5px 0 0 0;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background: #fff;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-button {
+      padding: 14px 20px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.3s;
+      color: #b30000;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-button:hover,
+    .tab-button.active {
+      background: #f2f2f2;
+      border-color: #b30000;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .tab-content img {
+      width: 100%;
+      max-width: 950px;
+      display: block;
+      margin: 0 auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* İnteraktif görsel container */
+    .pompa-panel-container {
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .pompa-panel-wrapper {
+      position: relative;
+      width: 100%;
+      display: inline-block;
+    }
+
+    .pompa-panel-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .marker {
+      background: #b30000;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    /* Çizgi stili - beyaz border ile */
+    .line {
+      position: absolute;
+      background: #b30000;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    /* Dikey çizgiler için */
+    .line-vertical {
+      width: 4px;
+    }
+
+    /* Yatay çizgiler için */
+    .line-horizontal {
+      height: 4px;
+    }
+
+    .marker:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 4px 12px rgba(179, 0, 0, 0.5);
+    }
+
+    .marker.active {
+      background: #fff;
+      color: #b30000;
+      border: 2px solid #b30000;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Tooltip stili */
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      opacity: 0;
+      visibility: hidden;
+      white-space: normal;
+      width: 250px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .tooltip.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .tooltip::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid rgba(0, 0, 0, 0.9);
+    }
+
+    /* Açıklamalar paneli */
+    .info-panel {
+      max-width: 950px;
+      margin: 30px auto 0;
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 25px;
+    }
+
+    .info-panel h3 {
+      margin: 0 0 20px 0;
+      color: #b30000;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .info-number {
+      background: #b30000;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      flex: 1;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    /* Responsive düzenlemeler */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 10px;
+      }
+
+      .title-section h1 {
+        font-size: 1.2rem;
+      }
+
+      .title-section h2 {
+        font-size: 0.85rem;
+      }
+
+      .logo-left img, .logo-right img {
+        height: 50px;
+      }
+
+      .tab-button {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+      }
+
+      .marker {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 0.8rem;
+      }
+
+      .tooltip {
+        width: 200px;
+        font-size: 0.75rem;
+        padding: 10px 12px;
+      }
+
+      .info-panel {
+        margin: 20px 15px 0;
+        padding: 20px;
+      }
+
+      .info-panel h3 {
+        font-size: 1.1rem;
+      }
+
+      .info-item {
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+      }
+
+      .info-number {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+        margin-right: 10px;
+      }
+
+      .info-text {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .logo-left, .logo-right {
+        display: none;
+      }
+
+      .title-section h1 {
+        font-size: 1.1rem;
+      }
+
+      .tabs {
+        overflow-x: auto;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .tab-button {
+        flex-shrink: 0;
+        font-size: 0.8rem;
+        padding: 8px 10px;
+      }
+
+      .marker {
+        width: 22px;
+        height: 22px;
+        line-height: 22px;
+        font-size: 0.75rem;
+      }
+
+      .tooltip {
+        width: 90vw;
+        max-width: 300px;
+        left: 50% !important;
+        transform: translateX(-50%);
+      }
+
+      .tooltip::before {
+        display: none;
+      }
+
+      .info-panel {
+        margin: 15px 10px 0;
+        padding: 15px;
+      }
+
+      .info-panel h3 {
+        font-size: 1rem;
+        margin-bottom: 15px;
+      }
+
+      .info-number {
+        width: 22px;
+        height: 22px;
+        font-size: 0.75rem;
+      }
+
+      .info-text {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-left">
+      <img src="img/abb.jpeg" alt="ABB" />
+    </div>
+    <div class="title-section">
+      <h1>ANKARA İTFAİYESİ</h1>
+      <h2>ROSENBAUER 12 TON MERCEDES KULLANIM</h2>
+    </div>
+    <div class="logo-right">
+      <img src="img/itf.png" alt="İTFAİYE" />
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-button active" data-tab="giris">Giriş</button>
+    <button class="tab-button" data-tab="panel">Araç İçi Panel</button>
+    <button class="tab-button" data-tab="pompa-panel">Pompa Paneli</button>
+    <button class="tab-button" data-tab="su">Su İşleme</button>
+    <button class="tab-button" data-tab="kopuk">Köpük İşleme</button>
+    <button class="tab-button" data-tab="cikrik">NE-Pİ-RO</button>
+
+  </nav>
+
+  <section id="giris" class="tab-content active">
+    <img src="img/giris.jpg" alt="Giriş">
+  </section>
+
+  <section id="panel" class="tab-content">
+    <img src="img/panel.jpg" alt="Araç Paneli">
+  </section>
+
+  <section id="pompa-panel" class="tab-content">
+    <div class="pompa-panel-container">
+      <div class="pompa-panel-wrapper" id="pompaPanelWrapper">
+        <img src="img/pompa.jpeg" alt="Pompa Paneli" id="pompaPanelImage">
+        
+        <!-- Markerlar ve çizgiler -->
+        <!-- 1 - Pompayı Çalıştır -->
+        <div class="marker" style="top: 20.5%; left: 55%;" data-info="POMPAYI ÇALIŞTIRIR">1</div>
+        <div class="line line-vertical" style="top: 21.5%; left: calc(55% - 2px); height: 5%;"></div>
+        <div class="tooltip" id="tooltip-1">POMPAYI ÇALIŞTIRIR.</div>
+
+        <!-- 2 - Pompayı Durdur -->
+        <div class="marker" style="top: 20.5%; left: 70%;" data-info="POMPAYI DURDURUR">2</div>
+        <div class="line line-vertical" style="top: 21.5%; left: calc(70% - 2px); height: 5%;"></div>
+        <div class="tooltip" id="tooltip-2">POMPAYI DURDURUR.</div>
+
+        <!-- 3 - Dijital Ekran -->
+        <div class="marker" style="top: 33%; left: 42%;" data-info="DİJİTAL EKRAN">3</div>
+        <div class="line line-horizontal" style="top: calc(33% - 2px); left: 36%; width: 6%;"></div>
+        <div class="tooltip" id="tooltip-3">DİJİTAL EKRAN.</div>
+
+        <!-- 4 - Tesisat Boşaltma -->
+        <div class="marker" style="top: 57%; left: 39%;" data-info="TESİSATTAKİ SUYU BOŞALTIR.">4</div>
+        <div class="line line-horizontal" style="top: calc(57% - 1px); left: 38%; width: 4%;"></div>
+        <div class="tooltip" id="tooltip-4">TESİSATTAKİ SUYU BOŞALTIR.</div>
+
+        <!-- 5 - Monitör Vanası -->
+        <div class="marker" style="top: 56.3%; left: 65%;" data-info="MONİTÖR VANASI.">5</div>
+        <div class="line line-horizontal" style="top: calc(56.3% - 2px); left: 60%; width: 5%;"></div>
+        <div class="tooltip" id="tooltip-5">MONİTÖR VANASI.</div>
+
+        <!-- 6 - Su Tankı Boşaltma -->
+        <div class="marker" style="top: 65.4%; left: 65%;" data-info="SU TANKINDAKİ SUYU BOŞALTIR.">6</div>
+        <div class="line line-horizontal" style="top: calc(65.4% - 2px); left: 61%; width: 3%;"></div>
+        <div class="tooltip" id="tooltip-6">SU TANKINDAKİ SUYU BOŞALTIR.</div>
+
+        <!-- 7 - Aydınlatma -->
+        <div class="marker" style="top: 73%; left: 52%;" data-info="AYDINLATMAYI AÇAR.">7</div>
+        <div class="line line-horizontal" style="top: calc(73% - 2px); left: 52%; width: 3%;"></div>
+        <div class="tooltip" id="tooltip-7">AYDINLATMAYI AÇAR.</div>
+
+        <!-- 8 - Ana Vana -->
+        <div class="marker" style="top: 57%; left: 11%;" data-info="ANA VANA">8</div>
+        <div class="line line-horizontal" style="top: calc(57% - 2px); left: 12%; width: 5%;"></div>
+        <div class="tooltip" id="tooltip-8">ANA VANA.</div>
+
+        <!-- 9 - Emiş Vanası -->
+        <div class="marker" style="top: 65%; left: 11%;" data-info="EMİŞ VANASI">9</div>
+        <div class="line line-horizontal" style="top: calc(65% - 2px); left: 12%; width: 5%;"></div>
+        <div class="tooltip" id="tooltip-9">EMİŞ VANASI.</div>
+
+        <!-- 10 - Basınç Ayarlama -->
+        <div class="marker" style="top: 39%; left: 77%;" data-info="BASINÇ AYARLAMA GAZ (-) - (+)">10</div>
+        <div class="line line-horizontal" style="top: calc(39% - 3px); left: 68%; width: 9%; height: 6px;"></div>
+        <div class="tooltip" id="tooltip-10">BASINÇ AYARLAMA GAZ (-) - (+).</div>
+      </div>
+        <!-- 11 - Tank Dolum -->
+        <div class="marker" style="top: 99%; left: 74%;" data-info="Tank Dolum">11</div>
+        <div class="line line-horizontal" style="top: calc(99% - 3px); left: 70%; width: 3%; height: 4px;"></div>
+        <div class="tooltip" id="tooltip-11">Tank Dolum</div>
+      </div>
+
+      <!-- Açıklamalar paneli -->
+      <div class="info-panel">
+        <h3>POMPA PANELİ AÇIKLAMALARI</h3>
+        <div class="info-item">
+          <div class="info-number">1</div>
+          <div class="info-text">P.T.O YU DEVREYE SOKARAK SU POMPASININ ÇALIŞMASINI SAĞLAR.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">2</div>
+          <div class="info-text">P.T.O YU DEVRE DIŞI BIRAKARAK POMPANIN ÇALIŞMASININ DURDURUR.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">3</div>
+          <div class="info-text">DİJİTAL EKRAN: Altındaki oklar sayesinde menüler içerisinde geçiş yapabilirsiniz. Su - köpük seviyesi görme, pompa çıkış basıncı, pompa devri ve pompa çalışma saati gibi bilgileri gösterir.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">4</div>
+          <div class="info-text">KIŞIN POMPANIN DONMA TEHLİKESİNE KARŞI TESİSATTAKİ SUYU BOŞALTIR.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">5</div>
+          <div class="info-text">MONİTÖRDEN SU İŞLEMEK İÇİN AÇILAN MONİTÖR VANASI.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">6</div>
+          <div class="info-text">SU TANKINDAKİ SUYU BOŞALTIR.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">7</div>
+          <div class="info-text">AYDINLATMAYI AÇAR.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">8</div>
+          <div class="info-text">ANA VANA: Start tuşuna bastığınız zaman emiş vanası ve ana vana arasında otomatik seçim yapar. Su işleneceği zaman basılmasına gerek yoktur sistem otomatik açıyor.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">9</div>
+          <div class="info-text">EMİŞ VANASI: Start tuşuna bastığınız zaman emiş vanası ve ana vana arasında otomatik seçim yapar. Emiş haricinde açmanıza gerek yoktur.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">10</div>
+          <div class="info-text">BASINÇ AYARLAMA GAZ (-) - (+) DÜĞMESİ: Pompa devrini ve aynı zamanda suyun basıncını arttırmak için, Düğmeyi sağa çevirirseniz gaz (+) sola çevirirseniz gaz (-) devreye girer.</div>
+        </div>
+        <div class="info-item">
+          <div class="info-number">11</div>
+          <div class="info-text">Emiş esnasında bu düğme açılırsa pompa emdiği suyu tanka doldurur (Açılmazsa emdiği suyu yangına işler), Diğer bir işlevi ise uzun süre pompadan su işlenmediği zaman pompa ısınmaya başlayacaktır. Bu ısınmanın önüne geçmek için bu tuş açıldığı zaman pompa basınçlandırdığı suyu tekrar su tankına doldurarak sürekli olarak bir devridaim yaparak kendisini soğutur.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="su" class="tab-content">
+    <img src="img/su isleme.jpg" alt="Su İşleme">
+  </section>
+
+  <section id="kopuk" class="tab-content">
+    <img src="img/kopuk.jpeg" alt="Köpük İşleme">
+  </section>
+
+  <section id="cikrik" class="tab-content">
+    <img src="img/ne pi ro.jpeg" alt="Çıkrık Kullanımı">
+  </section>
+
+
+  <script>
+    const buttons = document.querySelectorAll('.tab-button');
+    const tabs = document.querySelectorAll('.tab-content');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        button.classList.add('active');
+        document.getElementById(button.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Marker tıklama ve tooltip yönetimi
+    const markers = document.querySelectorAll('.marker');
+    const tooltips = document.querySelectorAll('.tooltip');
+    let activeMarker = null;
+    let activeTooltip = null;
+
+    markers.forEach((marker, index) => {
+      marker.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        const tooltip = document.getElementById(`tooltip-${index + 1}`);
+        
+        // Eğer başka bir marker aktifse, onu kapat
+        if (activeMarker && activeMarker !== marker) {
+          activeMarker.classList.remove('active');
+          activeTooltip.classList.remove('active');
+        }
+        
+        // Tıklanan marker'ı aktif/pasif yap
+        if (marker.classList.contains('active')) {
+          marker.classList.remove('active');
+          tooltip.classList.remove('active');
+          activeMarker = null;
+          activeTooltip = null;
+        } else {
+          marker.classList.add('active');
+          tooltip.classList.add('active');
+          activeMarker = marker;
+          activeTooltip = tooltip;
+          
+          // Tooltip pozisyonunu ayarla
+          positionTooltip(marker, tooltip);
+        }
+      });
+    });
+
+    // Tooltip pozisyonlama fonksiyonu
+    function positionTooltip(marker, tooltip) {
+      const markerRect = marker.getBoundingClientRect();
+      const wrapperRect = marker.parentElement.getBoundingClientRect();
+      
+      // Marker'ın wrapper içindeki pozisyonu
+      const markerLeft = markerRect.left - wrapperRect.left;
+      const markerTop = markerRect.top - wrapperRect.top;
+      
+      // Tooltip'i marker'ın altına yerleştir
+      tooltip.style.left = markerLeft + (markerRect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = markerTop + markerRect.height + 10 + 'px';
+      
+      // Ekran sınırlarını kontrol et
+      const tooltipRect = tooltip.getBoundingClientRect();
+      
+      // Sağ taraftan taşıyorsa
+      if (tooltipRect.right > window.innerWidth - 10) {
+        tooltip.style.left = 'auto';
+        tooltip.style.right = '10px';
+      }
+      
+      // Sol taraftan taşıyorsa
+      if (tooltipRect.left < 10) {
+        tooltip.style.left = '10px';
+      }
+    }
+
+    // Sayfanın herhangi bir yerine tıklandığında tooltip'i kapat
+    document.addEventListener('click', (e) => {
+      if (activeMarker && !e.target.classList.contains('marker')) {
+        activeMarker.classList.remove('active');
+        activeTooltip.classList.remove('active');
+        activeMarker = null;
+        activeTooltip = null;
+      }
+    });
+
+    // Pencere boyutu değiştiğinde tooltip pozisyonlarını güncelle
+    window.addEventListener('resize', () => {
+      if (activeMarker && activeTooltip) {
+        positionTooltip(activeMarker, activeTooltip);
+      }
+    });
+  </script>
+
+</body>
+</html>
